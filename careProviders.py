@@ -23,7 +23,7 @@ def main():
 
 def load_csv_file_as_object(file_path: str):
     result = []
-    with open(file_path, "r") as stream:
+    with open(file_path, "r", encoding="utf-8") as stream:
         reader = csv.reader(stream)
         header = next(reader)  # Skip header
         for line in reader:
