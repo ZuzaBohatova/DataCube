@@ -26,7 +26,8 @@ Po spuštění vygeneruje data cube do souboru careProviders.ttl.
 
 ### population2021.py
 Po spuštění vygeneruje data cube do souboru population2021.ttl.
+(Zde jsem nevytvářela slices, jelikož u prvního příkladu mi neprocházeli integritní test 7, někde je tam bohužel chyba)
 
 ### integrityConstraints.py
 Po stpuštění vezme výsledná data z dvou předchozích scriptů a otestuje všechna integrity constraints, viz zde: https://www.w3.org/TR/vocab-data-cube/#h3_wf-rules . Výsledek vypíše na standartní výstup. V případě, že je výsledek pro dané omezení False, tak je vše v pořádku. Pokud dotaz vrátí true, tak daná data cube porušuje toto integritní omezení.
-(Bohužel se mi nepodařilo správně přidat declaraci slice, tak pro tento případ odchytávám chybu, aby celý proces nespadl.) 
+(Bohužel se mi nepodařilo správně přidat declaraci slice, tak pro tento případ odchytávám chybu, aby celý proces nespadl. V první datové sadě jsem se o to pokoušela, bohužel to nefunguje, jak by mělo, tak druhý už jsem nechala bez slices) 
