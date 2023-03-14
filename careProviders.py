@@ -34,7 +34,8 @@ def as_data_cube(data):
     result = Graph()
     dimensions = create_dimensions(result)
     measures = create_measure(result)
-    structure = create_structure(result, dimensions, measures)
+    slices = create_slices(result)
+    structure = create_structure(result, dimensions, measures, slices)
     dataset = create_dataset(result, structure)
     create_observations(result, dataset, data)
     return result
@@ -80,7 +81,18 @@ def create_measure(collector: Graph):
 
     return [numberOfCareProviders]
 
-def create_structure(collector: Graph, dimensions, measures):
+def create_slices(collector: Graph):
+    slicePsychiatrie = NS.slicePsychiatrie
+    collector.add((slicePsychiatrie, RDF.type, QB.sliceKey))
+    collector.add((slicePsychiatrie, NS.fieldOfCare, Literal("psychiatrie", datatype=XSD.string)))
+    collector.add((slicePsychiatrie, SKOS.prefLabel, Literal("Řez přes počet poskytovatelů péče", lang="cs")))
+    collector.add((slicePsychiatrie, SKOS.prefLabel, Literal("Slice by field of care", lang="en")))
+    collector.add(( slicePsychiatrie, RDFS.subPropertyOf, SDMXDIMENSION.occupation))
+    collector.add(( slicePsychiatrie, RDFS.range, XSD.string))
+    return [slicePsychiatrie]
+
+
+def create_structure(collector: Graph, dimensions, measures, slices):
 
     structure = NS.structure
     collector.add( ( structure, RDF.type, QB.MeasureProperty ) )
@@ -94,6 +106,11 @@ def create_structure(collector: Graph, dimensions, measures):
         component = BNode()
         collector.add((structure, QB.component, component))
         collector.add((component, QB.measure, measure))
+
+    for sl in slices:
+        component = BNode()
+        collector.add((structure, QB.component, component))
+        collector.add((component, QB.dimension, sl))
 
     return structure
 
@@ -125,6 +142,8 @@ def create_observation(collector: Graph, dataset, resource, data):
     collector.add((resource, NS.region, Literal(data["Kraj"], datatype=XSD.string)))
     collector.add((resource, NS.fieldOfCare, Literal(data["OborPece"], datatype=XSD.string)))
     collector.add((resource, NS.numberOfCareProviders, Literal(data["PocetPoskytovatelu"], datatype=XSD.integer)))
+    if data['OborPece'] == "psychiatrie":
+        collector.add((resource, QB.sliceKey, NS.slicePsychiatrie))
 
 if __name__ == "__main__":
     main()
