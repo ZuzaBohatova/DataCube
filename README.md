@@ -8,7 +8,7 @@ Nutné mít nainstalovaný Python >= 3.8 a knihovny, které jsou uloženy v soub
 
 ## Instalace
 1. nejprve si naklonujte nebo stáhněte tento repozotář
-2. poté nainstalujte requirements příkazem: pip instal -r requirements.txt 
+2. poté nainstalujte requirements příkazem: pip install -r requirements.txt 
 3. spusťte dané soubory: python careProviders.py a python population2021.py
 4. až po provedení bodu 3. můžete spustit python integrityConstraints.py
 
