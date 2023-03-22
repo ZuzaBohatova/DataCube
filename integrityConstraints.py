@@ -257,10 +257,9 @@ for file in files:
     g = rdflib.Graph()
 
     result = g.parse(file, format='ttl', )
-    index = 0
     print(file)
 
-    for query in constraints:
+    for index, query in enumerate(constraints):
         print(constraintNames[index]+" -> ", end=" ")
         
         try:
@@ -268,6 +267,5 @@ for file in files:
                 print(row)
         except:
             print("Error")
-        index += 1
     print()
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import csv
-
+from unidecode import unidecode
 from rdflib import Graph, BNode, Literal, Namespace, URIRef
 from rdflib.namespace import QB, RDF, XSD, DCTERMS, SKOS
 
@@ -96,7 +96,7 @@ def create_dataset(collector: Graph, structure):
     collector.add((dataset, DCTERMS.available, Literal("2023-03-13", datatype=XSD.date)))
     collector.add((dataset, DCTERMS.language, Literal("cs", datatype=XSD.language)))
     collector.add((dataset, DCTERMS.language, Literal("en", datatype=XSD.language)))
-    collector.add((dataset, DCTERMS.license, URIRef("https://github.com/ZuzaBohatova/")))
+    collector.add((dataset, DCTERMS.license, URIRef("https://https://github.com/ZuzaBohatova/DataCube/blob/main/LICENSE")))
     collector.add((dataset, SKOS.prefLabel, Literal("Střední stav obyvatel", lang="cs")))
     collector.add((dataset, SKOS.prefLabel, Literal("Mean population", lang="en")))
     collector.add((dataset, QB.structure, structure))
@@ -112,9 +112,12 @@ def create_observations(collector: Graph, dataset, data):
 def create_observation(collector: Graph, dataset, resource, data):
     collector.add((resource, RDF.type, QB.Observation))
     collector.add((resource, QB.dataSet, dataset))
-    collector.add((resource, NS.county, Literal(data["okres"], datatype=XSD.string)))
-    collector.add((resource, NS.region, Literal(data["kraj"], datatype=XSD.string)))
-    collector.add((resource, NS.meanPopulation, Literal(data["hodnota"], datatype=XSD.integer)))
+    county_iri = NS + unidecode(data["okres"].replace(" ", ""))
+    region_iri = NS + unidecode(data["kraj"].replace(" ", ""))
+    meanPopulation_iri = NS + data["hodnota"].replace(" ","")
+    collector.add((resource, NS.county, URIRef(county_iri)))
+    collector.add((resource, NS.region, URIRef(region_iri)))
+    collector.add((resource, NS.meanPopulation, URIRef(meanPopulation_iri)))
 
 if __name__ == "__main__":
     main()

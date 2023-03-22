@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import csv
-
+from unidecode import unidecode
 from rdflib import Graph, BNode, Literal, Namespace, URIRef
 from rdflib.namespace import QB, RDF, XSD, DCTERMS, SKOS
 
@@ -122,7 +122,7 @@ def create_dataset(collector: Graph, structure):
     collector.add((dataset, DCTERMS.available, Literal("2023-03-13", datatype=XSD.date)))
     collector.add((dataset, DCTERMS.language, Literal("cs", datatype=XSD.language)))
     collector.add((dataset, DCTERMS.language, Literal("en", datatype=XSD.language)))
-    collector.add((dataset, DCTERMS.license, URIRef("https://github.com/ZuzaBohatova/")))
+    collector.add((dataset, DCTERMS.license, URIRef("https://https://github.com/ZuzaBohatova/DataCube/blob/main/LICENSE")))
     collector.add((dataset, SKOS.prefLabel, Literal("Počet poskytovatelů péče", lang="cs")))
     collector.add((dataset, SKOS.prefLabel, Literal("Number of care provider", lang="en")))
     collector.add((dataset, QB.structure, structure))
@@ -138,10 +138,14 @@ def create_observations(collector: Graph, dataset, data):
 def create_observation(collector: Graph, dataset, resource, data):
     collector.add((resource, RDF.type, QB.Observation))
     collector.add((resource, QB.dataSet, dataset))
-    collector.add((resource, NS.county, Literal(data["Okres"], datatype=XSD.string)))
-    collector.add((resource, NS.region, Literal(data["Kraj"], datatype=XSD.string)))
-    collector.add((resource, NS.fieldOfCare, Literal(data["OborPece"], datatype=XSD.string)))
-    collector.add((resource, NS.numberOfCareProviders, Literal(data["PocetPoskytovatelu"], datatype=XSD.integer)))
+    county_iri = NS + unidecode(data["Okres"].replace(" ", ""))
+    region_iri = NS + unidecode(data["Kraj"].replace(" ", ""))
+    fieldOfCare_iri = NS + unidecode(data["OborPece"].replace(" ","").replace(",","-"))
+    numberOfCareProviders_iri = NS + data["PocetPoskytovatelu"]
+    collector.add((resource, NS.county, URIRef(county_iri)))
+    collector.add((resource, NS.region, URIRef(region_iri)))
+    collector.add((resource, NS.fieldOfCare, URIRef(fieldOfCare_iri)))
+    collector.add((resource, NS.numberOfCareProviders, URIRef(numberOfCareProviders_iri)))
     if data['OborPece'] == "psychiatrie":
         collector.add((resource, QB.sliceKey, NS.slicePsychiatrie))
 
