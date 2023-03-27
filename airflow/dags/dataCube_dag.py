@@ -41,6 +41,7 @@ with  DAG(
         df = pd.read_csv("https://data.mzcr.cz/distribuce/63/narodni-registr-poskytovatelu-zdravotnich-sluzeb.csv", dtype=dtype)
         newFile = df.groupby(["Okres", "Kraj", "OborPece"]).size().reset_index(name="PocetPoskytovatelu")
         newFile.to_csv("./preparedDataCR.csv")
+        return newFile
 
     prepare_data_CareProviders_task = PythonOperator(
 		task_id = "prepare_data_CareProviders_task",
@@ -73,7 +74,7 @@ with  DAG(
 
         preparedData.rename(columns={"text1": "kraj", "text2":"okres"}, inplace=True)
         preparedData.to_csv("./preparedDataPopulation2021.csv")
-
+        return preparedData
     
 
     prepare_data_Population_task = PythonOperator(
