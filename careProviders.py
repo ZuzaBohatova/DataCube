@@ -146,6 +146,9 @@ def create_observation(collector: Graph, dataset, resource, data):
     collector.add((resource, NS.region, URIRef(region_iri)))
     collector.add((resource, NS.fieldOfCare, URIRef(fieldOfCare_iri)))
     collector.add((resource, NS.numberOfCareProviders, URIRef(numberOfCareProviders_iri)))
+    collector.add((URIRef(county_iri), SKOS.prefLabel, Literal(data["Okres"], lang="cs")))
+    collector.add((URIRef(region_iri), SKOS.prefLabel, Literal(data["Kraj"], lang="cs")))
+    collector.add((URIRef(fieldOfCare_iri), SKOS.prefLabel, Literal(data["OborPece"], lang="cs")))
     if data['OborPece'] == "psychiatrie":
         collector.add((resource, QB.sliceKey, NS.slicePsychiatrie))
 

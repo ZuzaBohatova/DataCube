@@ -118,6 +118,9 @@ def create_observation(collector: Graph, dataset, resource, data):
     collector.add((resource, NS.county, URIRef(county_iri)))
     collector.add((resource, NS.region, URIRef(region_iri)))
     collector.add((resource, NS.meanPopulation, URIRef(meanPopulation_iri)))
+    
+    collector.add((URIRef(county_iri), SKOS.prefLabel, Literal(data["okres"], lang="cs")))
+    collector.add((URIRef(region_iri), SKOS.prefLabel, Literal(data["kraj"], lang="cs")))
 
 if __name__ == "__main__":
     main()
