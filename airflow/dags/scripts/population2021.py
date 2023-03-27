@@ -13,11 +13,10 @@ SDMXMEASURE = Namespace("http://purl.org/linked-data/sdmx/2009/measure#")
 
 
 
-def main(outputfile):
+def produce_data_cube_Population(output_path = "/opt/airflow/dags/"):
     data_as_csv = load_csv_file_as_object("./preparedDataPopulation2021.csv")
     data_cube = as_data_cube(data_as_csv)
-    with open(outputfile, "w",encoding="utf-8") as stream:
-        stream.write(data_cube.serialize(format="ttl"))
+    data_cube.serialize(format="ttl", destination = output_path.rstrip("/") + "/population.ttl")
 
 
 def load_csv_file_as_object(file_path: str):
@@ -120,5 +119,5 @@ def create_observation(collector: Graph, dataset, resource, data):
     collector.add((resource, NS.meanPopulation, URIRef(meanPopulation_iri)))
 
 if __name__ == "__main__":
-    main()
+    produce_data_cube_Population()
 

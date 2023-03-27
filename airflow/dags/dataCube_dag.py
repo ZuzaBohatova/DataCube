@@ -1,20 +1,19 @@
 from datetime import datetime, timedelta
 from airflow import DAG
-from airflow.decorators import task
-from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
+
+from scripts.careProviders import produce_data_cube_CareProviders
+from scripts.population2021 import produce_data_cube_Population
 
 import pandas as pd
 import os
 
-def set_outputPath(filename, **param):
-    if 'dag_run' in param:
-        output_path = param['dag_run'].conf.get('output_path', 'airflow/dags/')
+def set_outputPath(fce, **param):
+    output_path = param['dag_run'].conf.get("output_path", None)
+    if output_path:
+        fce(output_path)
     else:
-        output_path = 'airflow/dags/'
-
-    file_path = os.path.join(output_path, filename)
-    return file_path
+        fce()
 
 
 default_args = {
@@ -42,11 +41,6 @@ with  DAG(
         df = pd.read_csv("https://data.mzcr.cz/distribuce/63/narodni-registr-poskytovatelu-zdravotnich-sluzeb.csv", dtype=dtype)
         newFile = df.groupby(["Okres", "Kraj", "OborPece"]).size().reset_index(name="PocetPoskytovatelu")
         newFile.to_csv("./preparedDataCR.csv")
-
-    def produce_data_cube_CareProviders():
-        from scripts.careProviders import main
-        outputPath = set_outputPath('health_care.ttl')
-        main(outputPath)
 
     prepare_data_CareProviders_task = PythonOperator(
 		task_id = "prepare_data_CareProviders_task",
@@ -79,25 +73,21 @@ with  DAG(
         preparedData.rename(columns={"text1": "kraj", "text2":"okres"}, inplace=True)
         preparedData.to_csv("./preparedDataPopulation2021.csv")
 
-    def produce_data_cube_Population():
-        from scripts.population2021 import main
-        outputPath = set_outputPath('population.ttl')
-        main(outputPath)
+    
 
     prepare_data_Population_task = PythonOperator(
 		task_id = "prepare_data_Population_task",
-		python_callable = prepare_data_Population,
+		python_callable = set_outputPath,
+        op_args=[produce_data_cube_CareProviders]
 	)
 
     produce_data_cube_Population_task = PythonOperator(
 		task_id = "produce_data_cube_Population_task",
-		python_callable = produce_data_cube_Population,
+		python_callable = set_outputPath,
+        op_args=[produce_data_cube_Population]
 	)
 
-    careProviders_task = prepare_data_CareProviders_task >> produce_data_cube_CareProviders_task
-
-    population_task = prepare_data_Population_task >> produce_data_cube_Population_task
-
-    run_this = careProviders_task, population_task
+    prepare_data_CareProviders_task >> produce_data_cube_CareProviders_task
+    prepare_data_Population_task >> produce_data_cube_Population_task
 
 
