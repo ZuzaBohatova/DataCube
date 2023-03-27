@@ -44,12 +44,12 @@ with  DAG(
 
     prepare_data_CareProviders_task = PythonOperator(
 		task_id = "prepare_data_CareProviders_task",
-		python_callable = prepare_data_CareProviders
+		python_callable = prepare_data_CareProviders,
 	)
     produce_data_cube_CareProviders_task = PythonOperator(
 		task_id = "produce_data_cube_CareProviders_task",
 		python_callable = set_outputPath,
-        op_args=[produce_data_cube_CareProviders]
+        op_args=[produce_data_cube_CareProviders],
 	)
 
     #Population2021
@@ -78,13 +78,13 @@ with  DAG(
 
     prepare_data_Population_task = PythonOperator(
 		task_id = "prepare_data_Population_task",
-		python_callable = prepare_data_Population
+		python_callable = prepare_data_Population,
 	)
 
     produce_data_cube_Population_task = PythonOperator(
 		task_id = "produce_data_cube_Population_task",
 		python_callable = set_outputPath,
-        op_args=[produce_data_cube_Population]
+        op_args=[produce_data_cube_Population],
 	)
 
     prepare_data_CareProviders_task >> produce_data_cube_CareProviders_task
