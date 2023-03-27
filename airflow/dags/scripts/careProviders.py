@@ -13,10 +13,11 @@ SDMXMEASURE = Namespace("http://purl.org/linked-data/sdmx/2009/measure#")
 
 
 
-def produce_data_cube_CareProviders(output_path="/opt/airflow/dags/"):
+def produce_data_cube_CareProviders(output_path):
     data_as_csv = load_csv_file_as_object("./preparedDataCR.csv")
     data_cube = as_data_cube(data_as_csv)
-    data_cube.serialize(format="ttl", destination = output_path.rstrip("/") + "/health_care.ttl")
+    with open(output_path+"health_care.ttl", "w",encoding="utf-8") as stream:
+        stream.write(data_cube.serialize(format="ttl"))
 
 
 def load_csv_file_as_object(file_path: str):
@@ -144,6 +145,9 @@ def create_observation(collector: Graph, dataset, resource, data):
     collector.add((resource, NS.region, URIRef(region_iri)))
     collector.add((resource, NS.fieldOfCare, URIRef(fieldOfCare_iri)))
     collector.add((resource, NS.numberOfCareProviders, URIRef(numberOfCareProviders_iri)))
+    collector.add((URIRef(county_iri), SKOS.prefLabel, Literal(data["Okres"], lang="cs")))
+    collector.add((URIRef(region_iri), SKOS.prefLabel, Literal(data["Kraj"], lang="cs")))
+    collector.add((URIRef(fieldOfCare_iri), SKOS.prefLabel, Literal(data["OborPece"], lang="cs")))
     if data['OborPece'] == "psychiatrie":
         collector.add((resource, QB.sliceKey, NS.slicePsychiatrie))
 
