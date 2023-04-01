@@ -1,0 +1,103 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+_:Nc4d9b8ba48c7441bb7f911738dcb1848 {
+    <file://130141-22data2021.csv> a prov:Location .
+
+    <file://VAZ0108_0109_CS.csv> a prov:Location .
+
+    <file://population2021.py> a prov:Location .
+
+    <file://population2021.ttl> a prov:Location .
+
+    <file://prepareDataPopulation2021.py> a prov:Location .
+
+    <file://preparedDataPopulation2021.py> a prov:Location .
+
+    <file://číselník-okresů-vazba-101-nadřízený.csv> a prov:Location .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#MffUK> a prov:Agent,
+            foaf:Organization ;
+        foaf:name "Matematicko-fyzikální fakulta, Univerzita Karlova"@cs ;
+        foaf:schoolHomepage "https://www.mff.cuni.cz/"^^xsd:anyURI .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#PetrSkoda> a prov:Agent,
+            prov:Person ;
+        prov:actedOnBehalfOf <https://github.com/ZuzaBohatova/DataCube/provenance#MffUK> ;
+        foaf:homepage "https://skodapetr.github.io/"^^xsd:anyURI ;
+        foaf:mbox <mailto:petr.skoda@matfyz.cuni.cz> ;
+        foaf:name "Petr Škoda"@cs .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#Population2021DataPreparing> a prov:Activity ;
+        prov:generated <https://github.com/ZuzaBohatova/DataCube/resources/PopulationPreparedDataset> ;
+        prov:qualifiedUsage [ a prov:Usage ;
+                prov:entity <https://github.com/ZuzaBohatova/DataCube/resources/PopulationCodeListDataset> ;
+                prov:hadRole <https://github.com/ZuzaBohatova/DataCube/provenance#PythonScript> ],
+            [ a prov:Usage ;
+                prov:entity <https://github.com/ZuzaBohatova/DataCube/resources/PopulationDataset> ;
+                prov:hadRole <https://github.com/ZuzaBohatova/DataCube/provenance#PythonScript> ],
+            [ a prov:Usage ;
+                prov:entity <https://github.com/ZuzaBohatova/DataCube/resources/PopulationCodeListNameDataset> ;
+                prov:hadRole <https://github.com/ZuzaBohatova/DataCube/provenance#PythonScript> ] ;
+        prov:used <https://github.com/ZuzaBohatova/DataCube/resources/PopulationCodeListDataset>,
+            <https://github.com/ZuzaBohatova/DataCube/resources/PopulationCodeListNameDataset>,
+            <https://github.com/ZuzaBohatova/DataCube/resources/PopulationDataset>,
+            <https://github.com/ZuzaBohatova/DataCube/resources/PopulationPreparedDataset> ;
+        prov:wasAssociatedWith <https://github.com/ZuzaBohatova/DataCube/provenance#ZuzanaBohatova> .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#PopulationDataCubeCreating> a prov:Activity ;
+        prov:generated <https://github.com/ZuzaBohatova/DataCube/resources/PopulationDataCube> ;
+        prov:qualifiedUsage [ a prov:Usage ;
+                prov:entity <https://github.com/ZuzaBohatova/DataCube/resources/PopulationPreparedDataset> ;
+                prov:hadRole <https://github.com/ZuzaBohatova/DataCube/provenance#PythonScript> ] .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#ScriptPopulation> a prov:SoftwareAgent ;
+        rdfs:label "Script population2021.py generující data cube"@cs ;
+        prov:actedOnBehalfOf <https://github.com/ZuzaBohatova/DataCube/provenance#ZuzanaBohatova> ;
+        prov:atLocation <file://population2021.py> .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#ScriptPreparePopulation> a prov:SoftwareAgent ;
+        rdfs:label "Script prepareDataPopulation2021.py připravující data ke zpracování"@cs ;
+        prov:actedOnBehalfOf <https://github.com/ZuzaBohatova/DataCube/provenance#ZuzanaBohatova> ;
+        prov:atLocation <file://prepareDataPopulation2021.py> .
+
+    <https://github.com/ZuzaBohatova/DataCube/resources/PopulationDataCube> a prov:Entity ;
+        rdfs:label "Vygenerovaná data cube Population 2021"@cs ;
+        prov:atLocation <file://population2021.ttl> ;
+        prov:wasAttributedTo <https://github.com/ZuzaBohatova/DataCube/provenance#ScriptPopulation> ;
+        prov:wasDerivedFrom <https://github.com/ZuzaBohatova/DataCube/resources/PopulationPreparedDataset> ;
+        prov:wasGeneratedBy <https://github.com/ZuzaBohatova/DataCube/provenance#PopulationDataCubeCreating> .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#ZuzanaBohatova> a prov:Agent,
+            prov:Person ;
+        prov:actedOnBehalfOf <https://github.com/ZuzaBohatova/DataCube/provenance#PetrSkoda> ;
+        foaf:homepage "https://github.com/ZuzaBohatova/"^^xsd:anyURI ;
+        foaf:mbox <mailto:zuzana.bohatova@email.cz> ;
+        foaf:name "Zuzana Bohatová"@cs .
+
+    <https://github.com/ZuzaBohatova/DataCube/resources/PopulationCodeListDataset> a prov:Entity ;
+        rdfs:label "Číselník okresů"@cs ;
+        prov:atLocation <file://130141-22data2021.csv> .
+
+    <https://github.com/ZuzaBohatova/DataCube/resources/PopulationCodeListNameDataset> a prov:Entity ;
+        rdfs:label "Číselník okresů s názvy krajů a okresů"@cs ;
+        prov:atLocation <file://VAZ0108_0109_CS.csv> .
+
+    <https://github.com/ZuzaBohatova/DataCube/resources/PopulationDataset> a prov:Entity ;
+        rdfs:label "Pohyb obyvatel za ČR, kraje, okresy, SO ORP a obce - rok 2021"@cs ;
+        prov:atLocation <file://číselník-okresů-vazba-101-nadřízený.csv> .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#PythonScript> a prov:Role .
+
+    <https://github.com/ZuzaBohatova/DataCube/resources/PopulationPreparedDataset> a prov:Entity ;
+        rdfs:label "Připravená data pro zpracování"@cs ;
+        prov:atLocation <file://preparedDataPopulation2021.py> ;
+        prov:wasAttributedTo <https://github.com/ZuzaBohatova/DataCube/provenance#ScriptPreparePopulation> ;
+        prov:wasDerivedFrom <https://github.com/ZuzaBohatova/DataCube/resources/PopulationCodeListDataset>,
+            <https://github.com/ZuzaBohatova/DataCube/resources/PopulationCodeListNameDataset>,
+            <https://github.com/ZuzaBohatova/DataCube/resources/PopulationDataset> ;
+        prov:wasGeneratedBy <https://github.com/ZuzaBohatova/DataCube/provenance#Population2021DataPreparing> .
+}
+

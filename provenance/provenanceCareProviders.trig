@@ -1,0 +1,82 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+_:N89ba3e6ea8d04582be4b0ff239ad132a {
+    <file://careProviders.py> a prov:Location .
+
+    <file://careProviders.ttl> a prov:Location .
+
+    <file://narodni-registr-poskytovatelu-zdravotnich-sluzeb.csv> a prov:Location .
+
+    <file://prepareDataCareProviders.py> a prov:Location .
+
+    <file://preparedDataCareProviders.py> a prov:Location .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#CareProvidersDataCubeCreating> a prov:Activity ;
+        prov:generated <https://github.com/ZuzaBohatova/DataCube/resources/CareProvidersDataCube> ;
+        prov:qualifiedUsage [ a prov:Usage ;
+                prov:entity <https://github.com/ZuzaBohatova/DataCube/resources/CareProvidersPreparedDataset> ;
+                prov:hadRole <https://github.com/ZuzaBohatova/DataCube/provenance#PythonScript> ] ;
+        prov:used <https://github.com/ZuzaBohatova/DataCube/resources/CareProvidersPreparedDataset> ;
+        prov:wasAssociatedWith <https://github.com/ZuzaBohatova/DataCube/provenance#ZuzanaBohatova> .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#CareProvidersPreparingData> a prov:Activity ;
+        prov:generated <https://github.com/ZuzaBohatova/DataCube/resources/CareProvidersPreparedDataset> ;
+        prov:qualifiedUsage [ a prov:Usage ;
+                prov:entity <https://github.com/ZuzaBohatova/DataCube/resources/CareProvidersDataset> ;
+                prov:hadRole <https://github.com/ZuzaBohatova/DataCube/provenance#PythonScript> ] ;
+        prov:used <https://github.com/ZuzaBohatova/DataCube/resources/CareProvidersDataset> ;
+        prov:wasAssociatedWith <https://github.com/ZuzaBohatova/DataCube/provenance#ZuzanaBohatova> .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#MffUK> a prov:Agent,
+            foaf:Organization ;
+        foaf:name "Matematicko-fyzikální fakulta, Univerzita Karlova"@cs ;
+        foaf:schoolHomepage "https://www.mff.cuni.cz/"^^xsd:anyURI .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#PetrSkoda> a prov:Agent,
+            prov:Person ;
+        prov:actedOnBehalfOf <https://github.com/ZuzaBohatova/DataCube/provenance#MffUK> ;
+        foaf:homepage "https://skodapetr.github.io/"^^xsd:anyURI ;
+        foaf:mbox <mailto:petr.skoda@matfyz.cuni.cz> ;
+        foaf:name "Petr Škoda"@cs .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#ScriptCareProviders> a prov:SoftwareAgent ;
+        rdfs:label "Script careProviders.py generující data cube"@cs ;
+        prov:actedOnBehalfOf <https://github.com/ZuzaBohatova/DataCube/provenance#ZuzanaBohatova> ;
+        prov:atLocation <file://careProviders.py> .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#ScriptPrepareDataCareProviders> a prov:SoftwareAgent ;
+        rdfs:label "Script prepareDataCareProviders.py připravující data ke zpracování"@cs ;
+        prov:actedOnBehalfOf <https://github.com/ZuzaBohatova/DataCube/provenance#ZuzanaBohatova> ;
+        prov:atLocation <file://prepareDataCareProviders.py> .
+
+    <https://github.com/ZuzaBohatova/DataCube/resources/CareProvidersDataCube> a prov:Entity ;
+        rdfs:label "Vygenerovaná data cube Care Providers"@cs ;
+        prov:atLocation <file://careProviders.ttl> ;
+        prov:wasAttributedTo <https://github.com/ZuzaBohatova/DataCube/provenance#ScriptCareProviders> ;
+        prov:wasDerivedFrom <https://github.com/ZuzaBohatova/DataCube/resources/CareProvidersPreparedDataset> ;
+        prov:wasGeneratedBy <https://github.com/ZuzaBohatova/DataCube/provenance#CareProvidersDataCubeCreating> .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#PythonScript> a prov:Role .
+
+    <https://github.com/ZuzaBohatova/DataCube/resources/CareProvidersDataset> a prov:Entity ;
+        rdfs:label "Původní data od Ministerstva Zdravotnictví"@cs ;
+        prov:atLocation <file://narodni-registr-poskytovatelu-zdravotnich-sluzeb.csv> .
+
+    <https://github.com/ZuzaBohatova/DataCube/provenance#ZuzanaBohatova> a prov:Agent,
+            prov:Person ;
+        prov:actedOnBehalfOf <https://github.com/ZuzaBohatova/DataCube/provenance#PetrSkoda> ;
+        foaf:homepage "https://github.com/ZuzaBohatova/"^^xsd:anyURI ;
+        foaf:mbox <mailto:zuzana.bohatova@email.cz> ;
+        foaf:name "Zuzana Bohatová"@cs .
+
+    <https://github.com/ZuzaBohatova/DataCube/resources/CareProvidersPreparedDataset> a prov:Entity ;
+        rdfs:label "Připravená data pro zpracování"@cs ;
+        prov:atLocation <file://preparedDataCareProviders.py> ;
+        prov:wasAttributedTo <https://github.com/ZuzaBohatova/DataCube/provenance#ScriptPrepareDataCareProviders> ;
+        prov:wasDerivedFrom <https://github.com/ZuzaBohatova/DataCube/resources/CareProvidersDataset> ;
+        prov:wasGeneratedBy <https://github.com/ZuzaBohatova/DataCube/provenance#CareProvidersPreparingData> .
+}
+
