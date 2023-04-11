@@ -10,6 +10,7 @@ NSR = Namespace("https://github.com/ZuzaBohatova/DataCube/resources/")
 RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 SDMXDIMENSION = Namespace("http://purl.org/linked-data/sdmx/2009/dimension#")
 SDMXMEASURE = Namespace("http://purl.org/linked-data/sdmx/2009/measure#")
+DCT = Namespace("http://purl.org/dc/terms/")
 
 
 
@@ -37,6 +38,7 @@ def as_data_cube(data):
     slices = create_slices(result)
     structure = create_structure(result, dimensions, measures, slices)
     dataset = create_dataset(result, structure)
+    create_conceptScheme(result)
     create_observations(result, dataset, data)
     return result
 
@@ -46,6 +48,7 @@ def create_dimensions(collector: Graph):
     county = NS.county
     collector.add((county, RDF.type, RDFS.Property))
     collector.add((county, RDF.type, QB.DimensionProperty))
+    collector.add((county, RDF.type, SKOS.Concept))
     collector.add((county, SKOS.prefLabel, Literal("Okres", lang="cs")))
     collector.add((county, SKOS.prefLabel, Literal("County", lang="en")))
     collector.add((county, RDFS.subPropertyOf, SDMXDIMENSION.refArea))
@@ -54,10 +57,12 @@ def create_dimensions(collector: Graph):
     region = NS.region
     collector.add((region, RDF.type, RDFS.Property))
     collector.add((region, RDF.type, QB.DimensionProperty))
+    collector.add((region, RDF.type, SKOS.Concept))
     collector.add((region, SKOS.prefLabel, Literal("Kraj", lang="cs")))
     collector.add((region, SKOS.prefLabel, Literal("Region", lang="en")))
     collector.add((region, RDFS.subPropertyOf, SDMXDIMENSION.refArea))
     collector.add((region, RDFS.range, XSD.string))
+
 
     fieldOfCare = NS.fieldOfCare
     collector.add((fieldOfCare, RDF.type, RDFS.Property))
@@ -90,6 +95,17 @@ def create_slices(collector: Graph):
     collector.add(( slicePsychiatrie, RDFS.subPropertyOf, SDMXDIMENSION.occupation))
     collector.add(( slicePsychiatrie, RDFS.range, XSD.string))
     return [slicePsychiatrie]
+
+def create_conceptScheme(collector: Graph):
+    schemeOfRegions = NS.schemeOfRegions
+    collector.add((schemeOfRegions, RDF.type, SKOS.ConceptScheme))
+    collector.add((schemeOfRegions, DCT.title, Literal("Kraje v ČR", lang="cs")))
+    collector.add((schemeOfRegions, DCT.creator, URIRef("https://github.com/ZuzaBohatova/")))
+
+    schemeOfCounties = NS.schemeOfCounties
+    collector.add((schemeOfCounties, RDF.type, SKOS.ConceptScheme))
+    collector.add((schemeOfCounties, DCT.title, Literal("Okresy v ČR", lang="cs")))
+    collector.add((schemeOfCounties, DCT.creator, URIRef("https://github.com/ZuzaBohatova/")))
 
 
 def create_structure(collector: Graph, dimensions, measures, slices):
@@ -146,8 +162,17 @@ def create_observation(collector: Graph, dataset, resource, data):
     collector.add((resource, NS.region, URIRef(region_iri)))
     collector.add((resource, NS.fieldOfCare, URIRef(fieldOfCare_iri)))
     collector.add((resource, NS.numberOfCareProviders, URIRef(numberOfCareProviders_iri)))
+
+    collector.add((URIRef(county_iri), RDF.type, SKOS.Concept))
     collector.add((URIRef(county_iri), SKOS.prefLabel, Literal(data["Okres"], lang="cs")))
+    collector.add((URIRef(county_iri), SKOS.broader, NS.county))
+    collector.add((URIRef(county_iri), SKOS.inScheme, NS.schemeOfCounties))
+
+    collector.add((URIRef(region_iri), RDF.type, SKOS.Concept))
     collector.add((URIRef(region_iri), SKOS.prefLabel, Literal(data["Kraj"], lang="cs")))
+    collector.add((URIRef(region_iri), SKOS.broader, NS.region))
+    collector.add((URIRef(region_iri), SKOS.inScheme, NS.schemeOfRegions))
+
     collector.add((URIRef(fieldOfCare_iri), SKOS.prefLabel, Literal(data["OborPece"], lang="cs")))
     if data['OborPece'] == "psychiatrie":
         collector.add((resource, QB.sliceKey, NS.slicePsychiatrie))
