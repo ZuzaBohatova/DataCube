@@ -10,7 +10,7 @@ NSR = Namespace("https://github.com/ZuzaBohatova/DataCube/resources/")
 RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 SDMXDIMENSION = Namespace("http://purl.org/linked-data/sdmx/2009/dimension#")
 SDMXMEASURE = Namespace("http://purl.org/linked-data/sdmx/2009/measure#")
-
+DCT = Namespace("http://purl.org/dc/terms/")
 
 
 def main():
@@ -44,6 +44,8 @@ def create_dimensions(collector: Graph):
     county = NS.county
     collector.add((county, RDF.type, RDFS.Property))
     collector.add((county, RDF.type, QB.DimensionProperty))
+    collector.add((county, RDF.type, SKOS.Concept))
+    collector.add((county, SKOS.inScheme, NS.schemeOfCounties))
     collector.add((county, SKOS.prefLabel, Literal("Okres", lang="cs")))
     collector.add((county, SKOS.prefLabel, Literal("County", lang="en")))
     collector.add((county, RDFS.subPropertyOf, SDMXDIMENSION.refArea))
@@ -52,6 +54,8 @@ def create_dimensions(collector: Graph):
     region = NS.region
     collector.add((region, RDF.type, RDFS.Property))
     collector.add((region, RDF.type, QB.DimensionProperty))
+    collector.add((region, RDF.type, SKOS.Concept))
+    collector.add((region, SKOS.inScheme, NS.schemeOfRegions))
     collector.add((region, SKOS.prefLabel, Literal("Kraj", lang="cs")))
     collector.add((region, SKOS.prefLabel, Literal("Region", lang="en")))
     collector.add((region, RDFS.subPropertyOf, SDMXDIMENSION.refArea))
@@ -70,6 +74,17 @@ def create_measure(collector: Graph):
     collector.add(( meanPopulation, RDFS.range, XSD.integer))
 
     return [meanPopulation]
+
+def create_conceptScheme(collector: Graph):
+    schemeOfRegions = NS.schemeOfRegions
+    collector.add((schemeOfRegions, RDF.type, SKOS.ConceptScheme))
+    collector.add((schemeOfRegions, DCT.title, Literal("Kraje v ČR", lang="cs")))
+    collector.add((schemeOfRegions, DCT.creator, URIRef("https://github.com/ZuzaBohatova/")))
+
+    schemeOfCounties = NS.schemeOfCounties
+    collector.add((schemeOfCounties, RDF.type, SKOS.ConceptScheme))
+    collector.add((schemeOfCounties, DCT.title, Literal("Okresy v ČR", lang="cs")))
+    collector.add((schemeOfCounties, DCT.creator, URIRef("https://github.com/ZuzaBohatova/")))
 
 def create_structure(collector: Graph, dimensions, measures):
 
@@ -115,12 +130,20 @@ def create_observation(collector: Graph, dataset, resource, data):
     county_iri = NS + unidecode(data["okres"].replace(" ", ""))
     region_iri = NS + unidecode(data["kraj"].replace(" ", ""))
     meanPopulation_iri = NS + data["hodnota"].replace(" ","")
+    
     collector.add((resource, NS.county, URIRef(county_iri)))
     collector.add((resource, NS.region, URIRef(region_iri)))
     collector.add((resource, NS.meanPopulation, URIRef(meanPopulation_iri)))
-    
+
+    collector.add((URIRef(county_iri), RDF.type, SKOS.Concept))
     collector.add((URIRef(county_iri), SKOS.prefLabel, Literal(data["okres"], lang="cs")))
+    collector.add((URIRef(county_iri), SKOS.broader, NS.county))
+    collector.add((URIRef(county_iri), SKOS.inScheme, NS.schemeOfCounties))
+
+    collector.add((URIRef(region_iri), RDF.type, SKOS.Concept))
     collector.add((URIRef(region_iri), SKOS.prefLabel, Literal(data["kraj"], lang="cs")))
+    collector.add((URIRef(region_iri), SKOS.broader, NS.region))
+    collector.add((URIRef(region_iri), SKOS.inScheme, NS.schemeOfRegions))
 
 if __name__ == "__main__":
     main()
