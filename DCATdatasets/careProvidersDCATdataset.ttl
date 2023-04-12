@@ -1,0 +1,47 @@
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix nsr: <https://github.com/ZuzaBohatova/DataCube/resources/> .
+
+nsr:careProvidersDataCube a dcat:Dataset ;
+    dct:title "Data cube of care providers"@en ;
+    dct:description "Generated data cube for care providers with Region, County and Field of care dimensions and number of care providers as measure "@en ;
+    dct:accrualPeriodicity <http://publications.europa.eu/resource/authority/frequency/BIMONTHLY> ;
+    dct:publisher <https://github.com/ZuzaBohatova> ;
+    dct:creator <https://github.com/ZuzaBohatova> ;
+    dct:spatial <http://publications.europa.eu/resource/authority/country/CZE> ;
+    dcat:keywords "data cube"@en, "care providers"@en, "health"@en, "field of care"@en, "region"@en, "county"@en ;
+    dcat:theme <http://eurovoc.europa.eu/c_c4afa011> ,
+        <http://eurovoc.europa.eu/100215> ,
+        <http://eurovoc.europa.eu/c_1c7d7d1e> ,
+        <http://eurovoc.europa.eu/1181> ,
+        <http://eurovoc.europa.eu/5921> ,
+        <http://eurovoc.europa.eu/139558> ,
+        <http://eurovoc.europa.eu/5860> ,
+        <http://eurovoc.europa.eu/362> ,
+        <http://eurovoc.europa.eu/3031> ;
+    dcat:distribution nsr:distributionOfCareProviders ;
+    dct:temporal [
+        a dct:PeriodOfTime ;
+        dcat:startDate "2023-03-22"^^xsd:date
+    ] ;
+    dct:modified "2021-04-11"^^xsd:date ;
+    dct:license <https://github.com/ZuzaBohatova/DataCube/blob/main/LICENSE> .
+
+# Distribution
+nsr:distributionOfCareProviders a dcat:Distribution ;
+    dct:title "Distribution of Care providers data cube in turtle" ;
+    dcat:downloadURL <https://github.com/ZuzaBohatova/DataCube/blob/main/data/careProviders.ttl> ;
+    dcat:accessURL <https://github.com/ZuzaBohatova/DataCube/blob/main/data/careProviders.ttl> ;
+    dcat:mediaType <https://www.iana.org/assignments/media-types/application/rdf+xml> ;
+    dct:format <http://publications.europa.eu/resource/authority/file-type/RDF_TURTLE> ;
+    dct:license <https://github.com/ZuzaBohatova/DataCube/blob/main/LICENSE>.
+  
+# Publisher
+<https://github.com/ZuzaBohatova> a foaf:Agent, foaf:Person ;
+    foaf:name "Zuzana Bohatová"@cs ;
+    foaf:homepage "https://github.com/ZuzaBohatova/"^^xsd:anyURI ;
+    foaf:mbox <mailto:zuzana.bohatova@email.cz> .
+
