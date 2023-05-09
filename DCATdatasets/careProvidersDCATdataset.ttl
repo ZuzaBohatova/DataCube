@@ -35,7 +35,7 @@ nsr:distributionOfCareProviders a dcat:Distribution ;
     dct:title "Distribution of Care providers data cube in turtle" ;
     dcat:downloadURL <https://github.com/ZuzaBohatova/DataCube/blob/main/data/careProviders.ttl> ;
     dcat:accessURL <https://github.com/ZuzaBohatova/DataCube/blob/main/data/careProviders.ttl> ;
-    dcat:mediaType <https://www.iana.org/assignments/media-types/application/rdf+xml> ;
+    dcat:mediaType <https://www.iana.org/assignments/media-types/text/turtle> ;
     dct:format <http://publications.europa.eu/resource/authority/file-type/RDF_TURTLE> ;
     dct:license <https://github.com/ZuzaBohatova/DataCube/blob/main/LICENSE>.
   
