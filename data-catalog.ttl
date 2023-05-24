@@ -37,7 +37,12 @@ nsr:distributionOfCareProviders a dcat:Distribution ;
     dcat:accessURL <https://github.com/ZuzaBohatova/DataCube/blob/main/data/careProviders.ttl> ;
     dcat:mediaType <https://www.iana.org/assignments/media-types/text/turtle> ;
     dct:format <http://publications.europa.eu/resource/authority/file-type/RDF_TURTLE> ;
-    dct:license <https://github.com/ZuzaBohatova/DataCube/blob/main/LICENSE>.
+    dct:license <https://github.com/ZuzaBohatova/DataCube/blob/main/LICENSE>;
+    spdx:checksum [
+      a spdx:Checksum ;
+        spdx:algorithm spdx:checksumAlgorithm_sha1 ;
+        spdx:checksumValue "88dc76a9aa71765b6d0369b80cf4f6f3795fbfd0"^^xsd:hexBinar 
+      ] .
   
 # Publisher
 <https://github.com/ZuzaBohatova> a foaf:Agent, foaf:Person ;
